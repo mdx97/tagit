@@ -71,6 +71,9 @@ export class TagRepo {
     }
 
     toString(): string {
+        if (Object.keys(this.#tagToFile).length == 0) {
+            return '';
+        }
         return (
             `Tag -> File\n` +
             `-----------\n` +
