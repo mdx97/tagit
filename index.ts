@@ -1,4 +1,6 @@
 import { parse } from "https://deno.land/std/flags/mod.ts";
+import { walkSync } from "https://deno.land/std/fs/mod.ts";
+import { dirname } from "https://deno.land/std/path/mod.ts"
 import { TagRepo } from "./src/tagRepo.ts";
 import { assertFileOp, assertInitialized, assertUninitialized, fatal } from "./src/util.ts";
 
@@ -23,7 +25,19 @@ try {
         }
         case 'init': {
             assertUninitialized();
-            Deno.create('.tag');
+            const repo = new TagRepo('.tag', {});
+
+            if (args["infer-tags"]) {
+                for (const entry of walkSync('.')) {
+                    if (entry.isFile && !dirname(entry.path).includes('.')) {
+                        // TODO: Don't think this is cross-platform.
+                        const tokens = dirname(entry.path).split('\\');
+                        repo.add(entry.path, tokens[tokens.length - 1]);
+                    }
+                }
+            }
+
+            repo.save();
             break;
         }
         case 'list': {
