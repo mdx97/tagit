@@ -57,6 +57,14 @@ export class TagRepo {
         this.#fileToTag[file] = (this.#fileToTag[file] || []).concat(tag);
     }
 
+    getFiles(tag: string): Array<string> {
+        return this.#tagToFile[tag] || [];
+    }
+
+    getTags(file: string): Array<string> {
+        return this.#fileToTag[file] || [];
+    }
+
     remove(file: string, tag: string) {
         if (this.#tagToFile[tag]) {
             this.#tagToFile[tag] = this.#tagToFile[tag].filter(file_ => file != file_);

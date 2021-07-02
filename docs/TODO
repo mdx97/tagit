@@ -1,10 +1,7 @@
 TODO List
 ---------
-- List tags for a single file.
-- List files for a single tag.
-- Flatten directory structure on init.
+- Ability to flatten directory structure on init.
 - Be able to restore directory after flatten.
-- On init, be able to flatten directory structure and initialize folder names as tags.
 
 Maybe List
 ----------

@@ -43,7 +43,18 @@ try {
         case 'list': {
             assertInitialized();
             const repo = await TagRepo.from('.tag');
-            console.log(repo.toString());
+
+            if (args.t && args.f) {
+                fatal('only specify one of -t or -f!');
+            } else if (args.t) {
+                console.log(repo.getFiles(args.t).join('\n'));
+            } else if (args.f) {
+                // TODO: Make this work cross-platform with paths. Currently, on Windows you need to type directories like: path\\to\\file.txt
+                console.log(repo.getTags(args.f).join('\n'));
+            } else {
+                console.log(repo.toString());
+            }
+
             break;
         }
         case 'remove': {
