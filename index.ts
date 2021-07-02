@@ -18,7 +18,9 @@ try {
         case 'add': {
             assertFileOp(args);
             const repo = await TagRepo.from('.tag');
-            // TODO: Check if the given path is actually a file, and not a directory.
+            if (!(await Deno.lstat(args.f)).isFile) {
+                fatal('Not a file!');
+            }
             repo.add(args.f, args.t);
             repo.save();
             break;
@@ -45,7 +47,7 @@ try {
             const repo = await TagRepo.from('.tag');
 
             if (args.t && args.f) {
-                fatal('only specify one of -t or -f!');
+                fatal('Only specify one of -t or -f!');
             } else if (args.t) {
                 console.log(repo.getFiles(args.t).join('\n'));
             } else if (args.f) {
