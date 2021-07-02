@@ -1,4 +1,4 @@
-import * as fs from "https://deno.land/std/fs/mod.ts";
+import * as fs from "https://deno.land/std@0.100.0/fs/mod.ts";
 import { Args } from "https://deno.land/std@0.100.0/flags/mod.ts";
 
 export const assertFileOp = (args: Args) => {

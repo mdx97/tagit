@@ -1,4 +1,4 @@
-import { readLines } from "https://deno.land/std/io/mod.ts";
+import { readLines } from "https://deno.land/std@0.100.0/io/mod.ts";
 import { TagMapping, tagMappingToString } from "./tagMapping.ts";
 
 export class TagRepo {

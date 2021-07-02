@@ -1,6 +1,6 @@
-import { parse } from "https://deno.land/std/flags/mod.ts";
-import { walkSync } from "https://deno.land/std/fs/mod.ts";
-import { dirname } from "https://deno.land/std/path/mod.ts"
+import { parse } from "https://deno.land/std@0.100.0/flags/mod.ts";
+import { walkSync } from "https://deno.land/std@0.100.0/fs/mod.ts";
+import { dirname } from "https://deno.land/std@0.100.0/path/mod.ts"
 import { TagRepo } from "./src/tagRepo.ts";
 import { assertFileOp, assertInitialized, assertUninitialized, fatal } from "./src/util.ts";
 
