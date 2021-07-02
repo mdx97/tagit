@@ -1,6 +1,5 @@
 import { readLines } from "https://deno.land/std/io/mod.ts";
-
-type TagMapping = Record<string, Array<string>>;
+import { TagMapping, tagMappingToString } from "./tagMapping.ts";
 
 export class TagRepo {
     #file: string;
@@ -40,18 +39,6 @@ export class TagRepo {
         return new TagRepo(file, mappings);
     }
 
-    static mappingToString = (mapping: TagMapping): string => {
-        let builder = '';
-        for (const [key, values] of Object.entries(mapping)) {
-            builder += `${key}\n`;
-            for (const value of values) {
-                builder += `- ${value}\n`;
-            }
-            builder += '\n';
-        }
-        return builder;
-    };
-
     add(file: string, tag: string) {
         this.#tagToFile[tag] = (this.#tagToFile[tag] || []).concat(file);
         this.#fileToTag[file] = (this.#fileToTag[file] || []).concat(tag);
@@ -75,7 +62,7 @@ export class TagRepo {
     }
 
     save() {
-        Deno.writeTextFileSync(this.#file, TagRepo.mappingToString(this.#tagToFile));
+        Deno.writeTextFileSync(this.#file, tagMappingToString(this.#tagToFile));
     }
 
     toString(): string {
@@ -85,10 +72,10 @@ export class TagRepo {
         return (
             `Tag -> File\n` +
             `-----------\n` +
-            `${TagRepo.mappingToString(this.#tagToFile)}\n` +
+            `${tagMappingToString(this.#tagToFile)}\n` +
             `File -> Tag\n` +
             `-----------\n` +
-            `${TagRepo.mappingToString(this.#fileToTag)}`
+            `${tagMappingToString(this.#fileToTag)}`
         );
     }
 }
