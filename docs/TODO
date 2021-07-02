@@ -2,6 +2,11 @@ TODO List
 ---------
 - Ability to flatten directory structure on init.
 - Be able to restore directory after flatten.
+- Implement help menu
+- Implement version command
+- Add ability to remove all files for a tag or all tags for a file with --all
+- Add ability to add multiple tags for a file.
+- Add ability to add multiple files for a tag.
 
 Maybe List
 ----------
