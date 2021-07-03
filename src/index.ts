@@ -93,6 +93,7 @@ try {
             break;
         }
         case 'remove': {
+            // TODO: We should also probably check for file existence here too...
             assertInitialized();
             if (args.f && !(args.t || args.all)) {
                 fatal('Tag not specified, please use -t <tag> or --all!');
@@ -103,13 +104,26 @@ try {
 
             const repo = await TagRepo.from('.tag');
 
-            // TODO: Actually check if said mapping exists.
+            // TODO: Disallow --all when -t and -f are specified.
+            // Not really a huge deal since it shouldn't do anything anyways.
             if (args.t && args.f) {
+                if (!repo.getTags(args.f).includes(args.t)) {
+                    fatal('That file does not have that tag!');
+                }
                 repo.remove(args.f, args.t);
+
             } else if (args.all && args.t) {
+                if (repo.getFiles(args.t).length == 0) {
+                    fatal('Tag does not exist!')
+                }
                 repo.removeAllFiles(args.t);
+
             } else if (args.all && args.f) {
+                if (repo.getTags(args.f).length == 0) {
+                    fatal('File has no tags!');
+                }
                 repo.removeAllTags(args.t);
+
             } else {
                 fatal('Invalid use of remove command!');
             }

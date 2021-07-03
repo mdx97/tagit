@@ -9,7 +9,6 @@ TODO List
 - Ability to remove multiple tags for a file.
 - Ability to remove multiple files for a tag.
 - ? Reorder errors in add (and probably remove) so that file detection is done earlier.
-- Include error when removing a tag that a file does not have.
 - Help menu for every command.
 - Manual
 
