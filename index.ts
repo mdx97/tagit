@@ -1,27 +1,9 @@
 import { parse } from "https://deno.land/std@0.100.0/flags/mod.ts";
-import { walkSync } from "https://deno.land/std@0.100.0/fs/mod.ts";
+import { existsSync, walkSync } from "https://deno.land/std@0.100.0/fs/mod.ts";
 import { dirname } from "https://deno.land/std@0.100.0/path/mod.ts"
 import { TagRepo } from "./src/tagRepo.ts";
-import { assertFileOp, assertInitialized, assertUninitialized, fatal } from "./src/util.ts";
-
-const VERSION = '0.1.0';
-
-export const displayHelpMenu = () => {
-    // TODO: This should probably be auto-generated based on available commands.
-    // TODO: Also we'll want to move this out of the index.ts file.
-    console.log(
-        `TagIt v${VERSION}\n` +
-        `author: Mathew Horner <mathewhorner456@gmail.com>\n\n` +
-        `Commands\n` +
-        `--------\n` +
-        `add            Adds a tag to a file.\n` +
-        `help           Displays this menu.\n` +
-        `init           Initializes the current directory as a TagIt directory.\n` +
-        `list           Lists files and their associated tags.\n` +
-        `remove         Removes a tag from a file.\n` +
-        `version        Displays the current version.\n`
-    );
-};
+import { assertInitialized, assertUninitialized, displayHelpMenu, fatal } from "./src/util.ts";
+import { VERSION } from "./src/constants.ts";
 
 const args = parse(Deno.args);
 
@@ -36,7 +18,7 @@ if (args.v || args.version) {
 }
 
 if (!args._ || args._.length != 1) {
-    console.log('Usage: deno run tagit.ts -- <command> [options]')
+    console.log('Usage: deno run index.ts <command> [options]')
     Deno.exit(1);
 }
 
@@ -45,11 +27,21 @@ try {
     // TODO: Check for errant flags for each command.
     switch (command) {
         case 'add': {
-            assertFileOp(args);
-            const repo = await TagRepo.from('.tag');
+            assertInitialized();
+            if (!args.f) {
+                fatal('File not specified, please use -f <file>!');
+            }
+            if (!args.t) {
+                fatal('Tag not specified, please use -t <tag>!');
+            }
+            if (!existsSync(args.f)) {
+                fatal('File not found!');
+            }
             if (!(await Deno.lstat(args.f)).isFile) {
                 fatal('Not a file!');
             }
+
+            const repo = await TagRepo.from('.tag');
             repo.add(args.f, args.t);
             repo.save();
             break;
@@ -93,9 +85,27 @@ try {
             break;
         }
         case 'remove': {
-            assertFileOp(args);
+            assertInitialized();
+            if (args.f && !(args.t || args.all)) {
+                fatal('Tag not specified, please use -t <tag> or --all!');
+            }
+            if (args.t && !(args.f || args.all)) {
+                fatal('File not specified, please use -f <file> or --all!');
+            }
+
             const repo = await TagRepo.from('.tag');
-            repo.remove(args.f, args.t);
+
+            // TODO: Actually check if said mapping exists.
+            if (args.t && args.f) {
+                repo.remove(args.f, args.t);
+            } else if (args.all && args.t) {
+                repo.removeAllFiles(args.t);
+            } else if (args.all && args.f) {
+                repo.removeAllTags(args.t);
+            } else {
+                fatal('Invalid use of remove command!');
+            }
+
             repo.save();
             break;
         }

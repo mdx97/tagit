@@ -53,11 +53,27 @@ export class TagRepo {
     }
 
     remove(file: string, tag: string) {
+        // TODO: Is there a more performant way to do this?
         if (this.#tagToFile[tag]) {
             this.#tagToFile[tag] = this.#tagToFile[tag].filter(file_ => file != file_);
         }
         if (this.#fileToTag[file]) {
             this.#fileToTag[file] = this.#fileToTag[file].filter(tag_ => tag != tag_);
+        }
+    }
+
+    removeAllFiles(tag: string) {
+        // TODO: Is there a more performant way to do this?
+        for (const file of this.#tagToFile[tag]) {
+            this.remove(file, tag);
+        }
+    }
+
+    removeAllTags(file: string) {
+        // TODO: Is there a more performant way to do this?
+        // TODO: Why is this not working?
+        for (const tag of this.#fileToTag[file]) {
+            this.remove(file, tag);
         }
     }
 
