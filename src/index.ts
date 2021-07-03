@@ -1,9 +1,9 @@
 import { parse } from "https://deno.land/std@0.100.0/flags/mod.ts";
 import { existsSync, walkSync } from "https://deno.land/std@0.100.0/fs/mod.ts";
 import { dirname } from "https://deno.land/std@0.100.0/path/mod.ts"
-import { TagRepo } from "./src/tagRepo.ts";
-import { assertInitialized, assertUninitialized, displayHelpMenu, fatal } from "./src/util.ts";
-import { VERSION } from "./src/constants.ts";
+import { TagRepo } from "./tagRepo.ts";
+import { assertInitialized, assertUninitialized, displayHelpMenu, fatal } from "./util.ts";
+import { VERSION } from "./constants.ts";
 
 const args = parse(Deno.args);
 
@@ -34,15 +34,23 @@ try {
             if (!args.t) {
                 fatal('Tag not specified, please use -t <tag>!');
             }
-            if (!existsSync(args.f)) {
-                fatal('File not found!');
-            }
-            if (!(await Deno.lstat(args.f)).isFile) {
-                fatal('Not a file!');
-            }
 
             const repo = await TagRepo.from('.tag');
-            repo.add(args.f, args.t);
+            const files = args.f.split(',');
+            const tags = args.t.split(',');
+
+            for (const tag of tags) {
+                for (const file of files) {
+                    if (!existsSync(file)) {
+                        fatal(`${file} not found!`);
+                    }
+                    if (!(await Deno.lstat(file)).isFile) {
+                        fatal(`${file} is not a file!`);
+                    }
+                    repo.add(file, tag);
+                }
+            }
+
             repo.save();
             break;
         }

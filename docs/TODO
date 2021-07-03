@@ -6,10 +6,12 @@ TODO List
 ---------
 - Ability to flatten directory structure on init.
 - Be able to restore directory after flatten.
-- Add ability to add multiple tags for a file.
-- Add ability to add multiple files for a tag.
+- Ability to remove multiple tags for a file.
+- Ability to remove multiple files for a tag.
 - ? Reorder errors in add (and probably remove) so that file detection is done earlier.
 - Include error when removing a tag that a file does not have.
+- Help menu for every command.
+- Manual
 
 Maybe List
 ----------

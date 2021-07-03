@@ -36,6 +36,7 @@ export class TagRepo {
             }
         }
 
+        Deno.close(reader.rid);
         return new TagRepo(file, mappings);
     }
 
