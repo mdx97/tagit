@@ -1,7 +1,6 @@
 import { parse } from "https://deno.land/std@0.100.0/flags/mod.ts";
 import { fatal } from "./util.ts";
-import { SUBCOMMAND_TABLE } from "./constants.ts";
-import { subcommandHelp, subcommandVersion } from "./subcommands.ts";
+import { SUBCOMMAND_TABLE, subcommandHelp, subcommandVersion } from "./subcommands.ts";
 
 const args = parse(Deno.args);
 

@@ -3,7 +3,7 @@ import { existsSync, walkSync } from "https://deno.land/std@0.100.0/fs/mod.ts";
 import { dirname } from "https://deno.land/std@0.100.0/path/mod.ts"
 import { TagRepo } from "./tagRepo.ts";
 import { assertInitialized, assertUninitialized, fatal } from "./util.ts";
-import { SUBCOMMAND_TABLE, VERSION } from "./constants.ts";
+import { VERSION } from "./constants.ts";
 
 export const subcommandAdd = async (args: Args) => {
     assertInitialized();
@@ -132,4 +132,42 @@ export const subcommandReset = async (_args: Args) => {
 
 export const subcommandVersion = (_args: Args) => {
     console.log(VERSION);
+};
+
+// =================================================
+
+type SubcommandMetadata = {
+    code: (args: Args) => void,
+    help: string,
+};
+
+export const SUBCOMMAND_TABLE: Record<string, SubcommandMetadata> = {
+    add: {
+        code: subcommandAdd,
+        help: 'Adds a tag to a file.',
+    },
+    help: {
+        code: subcommandHelp,
+        help: 'Displays this menu.',
+    },
+    init: {
+        code: subcommandInit,
+        help: 'Initializes the current directory as a TagIt directory.',
+    },
+    list: {
+        code: subcommandList,
+        help: 'Lists files and their associated tags.',
+    },
+    remove: {
+        code: subcommandRemove,
+        help: 'Removes a tag from a file.',
+    },
+    reset: {
+        code: subcommandReset,
+        help: 'Resets all tag mappings in this directory.'
+    },
+    version: {
+        code: subcommandVersion,
+        help: 'Displays the current version.',
+    },
 };
