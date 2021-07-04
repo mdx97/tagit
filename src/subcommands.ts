@@ -124,6 +124,12 @@ export const subcommandRemove = async (args: Args) => {
     repo.save();
 };
 
+export const subcommandReset = async (_args: Args) => {
+    const repo = await TagRepo.from('.tag');
+    repo.reset();
+    repo.save();
+};
+
 export const subcommandVersion = (_args: Args) => {
     console.log(VERSION);
 };

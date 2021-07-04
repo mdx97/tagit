@@ -29,6 +29,10 @@ export const SUBCOMMAND_TABLE: Record<string, SubcommandMetadata> = {
         code: sc.subcommandRemove,
         help: 'Removes a tag from a file.',
     },
+    reset: {
+        code: sc.subcommandReset,
+        help: 'Resets all tag mappings in this directory.'
+    },
     version: {
         code: sc.subcommandVersion,
         help: 'Displays the current version.',

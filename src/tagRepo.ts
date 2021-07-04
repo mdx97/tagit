@@ -78,6 +78,11 @@ export class TagRepo {
         }
     }
 
+    reset() {
+        this.#tagToFile = {};
+        this.#fileToTag = {};
+    }
+
     save() {
         Deno.writeTextFileSync(this.#file, tagMappingToString(this.#tagToFile));
     }
