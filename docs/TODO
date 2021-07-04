@@ -11,6 +11,8 @@ TODO List
 - ? Reorder errors in add (and probably remove) so that file detection is done earlier.
 - Help menu for every command.
 - Manual
+- README
+- Add tagit reset to remove all tags?
 
 Maybe List
 ----------
